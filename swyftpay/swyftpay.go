@@ -1,4 +1,3 @@
-// Package swyftpay provides functionality for interacting with Swyftpay API.
 package swyftpay
 
 // SwyftpayClientOption represents the options for SwyftpayClient.
