@@ -17,12 +17,11 @@
 
 <h1 align="center">Go Client for Swyftpay</h1>
 
-<p align="center">
-  [![Coverage Status](https://coveralls.io/repos/swerv-ltd/swyftpay-go/badge.svg?branch=main&service=github)](https://coveralls.io/github.com/swerv-ltd/swyftpay-go?branch=main)
-  [![Go Report Card](https://goreportcard.com/badge/github.com/swerv-ltd/swyftpay-go)](https://goreportcard.com/report/github.com/swerv-ltd/swyftpay-go)
-  [![GoDoc](https://godoc.org/github.com/swerv-ltd/swyftpay-go?status.svg)](https://pkg.go.dev/github.com/swerv-ltd/swyftpay-go)
-  ![License](https://img.shields.io/dub/l/vibe-d.svg)
-</p>
+[![Coverage Status](https://coveralls.io/repos/swerv-ltd/swyftpay-go/badge.svg?branch=main&service=github)](https://coveralls.io/github.com/swerv-ltd/swyftpay-go?branch=main)
+[![Go Report Card](https://goreportcard.com/badge/github.com/swerv-ltd/swyftpay-go)](https://goreportcard.com/report/github.com/swerv-ltd/swyftpay-go)
+[![GoDoc](https://godoc.org/github.com/swerv-ltd/swyftpay-go?status.svg)](https://pkg.go.dev/github.com/swerv-ltd/swyftpay-go)
+![License](https://img.shields.io/dub/l/vibe-d.svg)
+
 
 <p align="center">
     <br />
