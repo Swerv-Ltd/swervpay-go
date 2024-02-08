@@ -1,7 +1,7 @@
 package main
 
 import (
-	"swervpay-go/swyftpay"
+	"github.com/swerv-ltd/swervpay-go/swyftpay"
 )
 
 func main() {
@@ -11,7 +11,7 @@ func main() {
 		Sandbox:    true,
 		Timeout:    30000,
 		Version:    "v1",
-		BaseURL:    "https://swyftpay.com/api",
+		BaseURL:    "https://api.swervpay.co/v1",
 	}
 
 	swyftpayClient := swyftpay.NewSwyftpayClient(clientOptions)
