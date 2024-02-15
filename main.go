@@ -1,11 +1,7 @@
 package main
 
-import (
-	"github.com/swerv-ltd/swervpay-go/swyftpay"
-)
-
 func main() {
-	clientOptions := &swyftpay.SwyftpayClientOption{
+	clientOptions := &SwervpayClientOption{
 		BusinessID: "business123",
 		SecretKey:  "secretKey123",
 		Sandbox:    true,
@@ -14,8 +10,6 @@ func main() {
 		BaseURL:    "https://api.swervpay.co/v1",
 	}
 
-	swyftpayClient := swyftpay.NewSwyftpayClient(clientOptions)
-	//swyftpayApiClient := swyftpay.NewSwyftpayApiClient()
+	swervpayClient := NewSwervpayClient(clientOptions)
 
-	swyftpayClient.PrintOptions()
 }

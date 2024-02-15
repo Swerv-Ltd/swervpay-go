@@ -1,4 +1,4 @@
-package swyftpay
+package main
 
 import "testing"
 
