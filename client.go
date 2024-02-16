@@ -12,7 +12,7 @@ import (
 
 const (
 	version     = "0.0.1"
-	userAgent   = "Swervpay/Go-Sdk" + version
+	userAgent   = "Swervpay/Go-Sdk " + version
 	contentType = "application/json"
 )
 
