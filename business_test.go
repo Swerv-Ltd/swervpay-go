@@ -32,7 +32,7 @@ func teardown() {
 	server.Close()
 }
 
-func TestSendEmail(t *testing.T) {
+func TestGetBusiness(t *testing.T) {
 	setup()
 	defer teardown()
 

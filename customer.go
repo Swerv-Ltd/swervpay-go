@@ -34,14 +34,33 @@ type UpdateustomerBody struct {
 }
 
 type CustomerKycBody struct {
+	Tier  string        `json:"tier"`
+	Tier1 Tier1KycInput `json:"information"`
+	Tier2 Tier2KycInput `json:"document"`
+}
+
+type Tier1KycInput struct {
+	Bvn        string `json:"bvn"`
+	State      string `json:"state"`
+	City       string `json:"city"`
+	Country    string `json:"country"`
+	Address    string `json:"address"`
+	PostalCode string `json:"postal_code"`
+}
+
+type Tier2KycInput struct {
+	DocumentType   string `json:"document_type"`
+	Document       string `json:"document"`
+	Passport       string `json:"passport"`
+	DocumentNumber string `json:"document_number"`
 }
 
 type CustomerInt interface {
 	Gets(ctx context.Context, query *PageAndLimitQuery) (*[]Customer, error)
 	Get(ctx context.Context, id string) (*Customer, error)
-	Create(ctx context.Context, body CreateCustomerBody) (*Customer, error)
-	Update(ctx context.Context, id string, body UpdateustomerBody) (*Customer, error)
-	Kyc(ctx context.Context, id string, body CustomerKycBody) (*DefaultResponse, error)
+	Create(ctx context.Context, body *CreateCustomerBody) (*Customer, error)
+	Update(ctx context.Context, id string, body *UpdateustomerBody) (*Customer, error)
+	Kyc(ctx context.Context, id string, body *CustomerKycBody) (*DefaultResponse, error)
 	Blacklist(ctx context.Context, id string) (*DefaultResponse, error)
 }
 
@@ -88,7 +107,7 @@ func (c CustomerIntImpl) Get(ctx context.Context, id string) (*Customer, error) 
 	return response, nil
 }
 
-func (c CustomerIntImpl) Create(ctx context.Context, body CreateCustomerBody) (*Customer, error) {
+func (c CustomerIntImpl) Create(ctx context.Context, body *CreateCustomerBody) (*Customer, error) {
 	req, err := c.client.NewRequest(ctx, http.MethodPost, "customers", body)
 	if err != nil {
 		return nil, err
@@ -105,7 +124,7 @@ func (c CustomerIntImpl) Create(ctx context.Context, body CreateCustomerBody) (*
 	return response, nil
 }
 
-func (c CustomerIntImpl) Update(ctx context.Context, id string, body UpdateustomerBody) (*Customer, error) {
+func (c CustomerIntImpl) Update(ctx context.Context, id string, body *UpdateustomerBody) (*Customer, error) {
 	req, err := c.client.NewRequest(ctx, http.MethodPost, "customers/"+id+"/update", body)
 	if err != nil {
 		return nil, err
@@ -122,7 +141,7 @@ func (c CustomerIntImpl) Update(ctx context.Context, id string, body Updateustom
 	return response, nil
 }
 
-func (c CustomerIntImpl) Kyc(ctx context.Context, id string, body CustomerKycBody) (*DefaultResponse, error) {
+func (c CustomerIntImpl) Kyc(ctx context.Context, id string, body *CustomerKycBody) (*DefaultResponse, error) {
 	req, err := c.client.NewRequest(ctx, http.MethodPost, "customers/"+id+"/kyc", body)
 	if err != nil {
 		return nil, err

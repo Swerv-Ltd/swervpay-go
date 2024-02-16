@@ -31,6 +31,17 @@ type Card struct {
 }
 
 type CreateCardBody struct {
+	Amount     float64 `json:"amount"`
+	CustomerId string  `json:"customer_id"`
+	Provider   string  `json:"provider"`
+	NameOnCard string  `json:"name_on_card"`
+	Currency   string  `json:"currency"`
+	Type       string  `json:"type"`
+}
+
+type CardCreationResponse struct {
+	CardID  string `json:"card_id"`
+	Message string `json:"message"`
 }
 
 type FundOrWithdrawCardBody struct {
@@ -40,9 +51,9 @@ type FundOrWithdrawCardBody struct {
 type CardInt interface {
 	Gets(ctx context.Context, query *PageAndLimitQuery) (*[]Card, error)
 	Get(ctx context.Context, id string) (*Card, error)
-	Create(ctx context.Context, body CreateCardBody) (*DefaultResponse, error)
-	Fund(ctx context.Context, id string, body FundOrWithdrawCardBody) (*DefaultResponse, error)
-	Withdraw(ctx context.Context, id string, body FundOrWithdrawCardBody) (*DefaultResponse, error)
+	Create(ctx context.Context, body *CreateCardBody) (*CardCreationResponse, error)
+	Fund(ctx context.Context, id string, body *FundOrWithdrawCardBody) (*DefaultResponse, error)
+	Withdraw(ctx context.Context, id string, body *FundOrWithdrawCardBody) (*DefaultResponse, error)
 	Terminate(ctx context.Context, id string) (*DefaultResponse, error)
 	Freeze(ctx context.Context, id string) (*DefaultResponse, error)
 }
@@ -90,13 +101,13 @@ func (c CardIntImpl) Get(ctx context.Context, id string) (*Card, error) {
 	return response, nil
 }
 
-func (c CardIntImpl) Create(ctx context.Context, body CreateCardBody) (*DefaultResponse, error) {
+func (c CardIntImpl) Create(ctx context.Context, body *CreateCardBody) (*CardCreationResponse, error) {
 	req, err := c.client.NewRequest(ctx, http.MethodPost, "cards", body)
 	if err != nil {
 		return nil, err
 	}
 
-	response := new(DefaultResponse)
+	response := new(CardCreationResponse)
 
 	_, err = c.client.Perform(req, response)
 
@@ -107,7 +118,7 @@ func (c CardIntImpl) Create(ctx context.Context, body CreateCardBody) (*DefaultR
 	return response, nil
 }
 
-func (c CardIntImpl) Fund(ctx context.Context, id string, body FundOrWithdrawCardBody) (*DefaultResponse, error) {
+func (c CardIntImpl) Fund(ctx context.Context, id string, body *FundOrWithdrawCardBody) (*DefaultResponse, error) {
 	req, err := c.client.NewRequest(ctx, http.MethodPost, "cards/"+id+"/fund", body)
 	if err != nil {
 		return nil, err
@@ -124,7 +135,7 @@ func (c CardIntImpl) Fund(ctx context.Context, id string, body FundOrWithdrawCar
 	return response, nil
 }
 
-func (c CardIntImpl) Withdraw(ctx context.Context, id string, body FundOrWithdrawCardBody) (*DefaultResponse, error) {
+func (c CardIntImpl) Withdraw(ctx context.Context, id string, body *FundOrWithdrawCardBody) (*DefaultResponse, error) {
 	req, err := c.client.NewRequest(ctx, http.MethodPost, "cards/"+id+"/withdraw", body)
 	if err != nil {
 		return nil, err
