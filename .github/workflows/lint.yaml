@@ -1,0 +1,25 @@
+name: 🔍 CI Lint
+on:
+  push:
+    tags:
+      - v*
+    branches:
+      - main
+  pull_request:
+permissions:
+  contents: read
+
+jobs:
+  otunba:
+    name: CI linter for go
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '1.20'
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+
+          version: v1.54
