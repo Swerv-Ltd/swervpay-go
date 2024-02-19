@@ -1,4 +1,4 @@
-package main
+package swervpay
 
 type PageAndLimitQuery struct {
 	Page  int `json:"page"`
