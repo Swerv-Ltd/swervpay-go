@@ -6,6 +6,22 @@ import (
 )
 
 type Wallet struct {
+	AccountName    string `json:"account_name"`
+	AccountNumber  string `json:"account_number"`
+	AccountType    string `json:"account_type"`
+	Balance        int64  `json:"balance"`
+	BankAddress    string `json:"bank_address"`
+	BankCode       string `json:"bank_code"`
+	BankName       string `json:"bank_name"`
+	CreatedAt      string `json:"created_at"`
+	ID             string `json:"id"`
+	IsBlocked      bool   `json:"is_blocked"`
+	Label          string `json:"label"`
+	PendingBalance int64  `json:"pending_balance"`
+	Reference      string `json:"reference"`
+	RoutingNumber  string `json:"routing_number"`
+	TotalReceived  int64  `json:"total_received"`
+	UpdatedAt      string `json:"updated_at"`
 }
 
 type WalletInt interface {

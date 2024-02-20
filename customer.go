@@ -6,7 +6,6 @@ import (
 )
 
 type Customer struct {
-	BusinessID    string `json:"business_id"`
 	Country       string `json:"country"`
 	CreatedAt     string `json:"created_at"`
 	Email         string `json:"email"`

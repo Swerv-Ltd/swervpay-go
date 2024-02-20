@@ -5,9 +5,17 @@ import (
 	"net/http"
 )
 
-type Bank struct{}
+type Bank struct {
+	Code string `json:"code"`
+	Name string `json:"name"`
+}
 
-type ResolveAccountNumber struct{}
+type ResolveAccountNumber struct {
+	AccountNumber string `json:"account_number"`
+	BankCode      string `json:"bank_code"`
+	BankName      string `json:"bank_name"`
+	AccountName   string `json:"account_name"`
+}
 
 type ResolveAccountNumberBody struct {
 	AccountNumber string `json:"account_number"`

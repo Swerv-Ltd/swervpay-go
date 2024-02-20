@@ -5,7 +5,26 @@ import (
 	"net/http"
 )
 
-type Transaction struct{}
+type Transaction struct {
+	AccountName   string `json:"account_name"`
+	AccountNumber string `json:"account_number"`
+	Amount        int64  `json:"amount"`
+	BankCode      string `json:"bank_code"`
+	BankName      string `json:"bank_name"`
+	Category      string `json:"category"`
+	Charges       int64  `json:"charges"`
+	CreatedAt     string `json:"created_at"`
+	Detail        string `json:"detail"`
+	FiatRate      int64  `json:"fiat_rate"`
+	ID            string `json:"id"`
+	Reference     string `json:"reference"`
+	Report        bool   `json:"report"`
+	ReportMessage string `json:"report_message"`
+	SessionID     string `json:"session_id"`
+	Status        string `json:"status"`
+	Type          string `json:"type"`
+	UpdatedAt     string `json:"updated_at"`
+}
 
 type TransactionInt interface {
 	Gets(ctx context.Context, query *PageAndLimitQuery) (*[]Transaction, error)

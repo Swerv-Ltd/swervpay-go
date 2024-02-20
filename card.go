@@ -12,11 +12,9 @@ type Card struct {
 	AddressState      string `json:"address_state"`
 	AddressStreet     string `json:"address_street"`
 	Balance           int64  `json:"balance"`
-	BusinessID        string `json:"business_id"`
 	CardNumber        string `json:"card_number"`
 	CreatedAt         string `json:"created_at"`
 	Currency          string `json:"currency"`
-	CustomerID        string `json:"customer_id"`
 	Cvv               string `json:"cvv"`
 	Expiry            string `json:"expiry"`
 	Freeze            bool   `json:"freeze"`
