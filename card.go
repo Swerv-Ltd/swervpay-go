@@ -28,6 +28,28 @@ type Card struct {
 	UpdatedAt         string `json:"updated_at"`
 }
 
+type CardTransactionHistory struct {
+	Amount             int64  `json:"amount"`
+	Category           string `json:"category"`
+	Charges            int64  `json:"charges"`
+	CreatedAt          string `json:"created_at"`
+	Currency           string `json:"currency"`
+	ID                 string `json:"id"`
+	MerchantCity       string `json:"merchant_city"`
+	MerchantCountry    string `json:"merchant_country"`
+	MerchantMcc        string `json:"merchant_mcc"`
+	MerchantMid        string `json:"merchant_mid"`
+	MerchantName       string `json:"merchant_name"`
+	MerchantPostalCode string `json:"merchant_postal_code"`
+	MerchantState      string `json:"merchant_state"`
+	Reference          string `json:"reference"`
+	Report             bool   `json:"report"`
+	ReportMessage      string `json:"report_message"`
+	Status             string `json:"status"`
+	Type               string `json:"type"`
+	UpdatedAt          string `json:"updated_at"`
+}
+
 type CreateCardBody struct {
 	Amount     float64 `json:"amount"`
 	CustomerId string  `json:"customer_id"`
@@ -54,6 +76,8 @@ type CardInt interface {
 	Withdraw(ctx context.Context, id string, body *FundOrWithdrawCardBody) (*DefaultResponse, error)
 	Terminate(ctx context.Context, id string) (*DefaultResponse, error)
 	Freeze(ctx context.Context, id string) (*DefaultResponse, error)
+	Transactions(ctx context.Context, id string, query *PageAndLimitQuery) (*[]CardTransactionHistory, error)
+	Transaction(ctx context.Context, id string, transactionId string) (*CardTransactionHistory, error)
 }
 
 type CardIntImpl struct {
@@ -174,6 +198,45 @@ func (c CardIntImpl) Freeze(ctx context.Context, id string) (*DefaultResponse, e
 	}
 
 	response := new(DefaultResponse)
+
+	_, err = c.client.Perform(req, response)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
+func (c CardIntImpl) Transactions(ctx context.Context, id string, query *PageAndLimitQuery) (*[]CardTransactionHistory, error) {
+	path := GenerateURLPath("cards/"+id+"/transactions", query)
+
+	// Prepare request
+	req, err := c.client.NewRequest(ctx, http.MethodGet, path, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	response := new([]CardTransactionHistory)
+
+	_, err = c.client.Perform(req, response)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
+func (c CardIntImpl) Transaction(ctx context.Context, id string, transactionId string) (*CardTransactionHistory, error) {
+
+	// Prepare request
+	req, err := c.client.NewRequest(ctx, http.MethodGet, "cards/"+id+"/transactions/"+transactionId, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	response := new(CardTransactionHistory)
 
 	_, err = c.client.Perform(req, response)
 

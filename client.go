@@ -45,6 +45,7 @@ type SwervpayClient struct {
 	Webhook     WebhookInt
 	Transaction TransactionInt
 	Other       OtherInt
+	Collection  CollectionInt
 }
 
 // NewSwervpayClient creates a new SwervpayClient with the given options.
@@ -62,6 +63,7 @@ func NewSwervpayClient(config *SwervpayClientOption) *SwervpayClient {
 	s.Other = &OtherIntImpl{client: s}
 	s.Card = &CardIntImpl{client: s}
 	s.Customer = &CustomerIntImpl{client: s}
+	s.Collection = &CollectionIntImpl{client: s}
 
 	return s
 }
