@@ -5,32 +5,8 @@ import (
 	"encoding/json"
 	"github.com/stretchr/testify/assert"
 	"net/http"
-	"net/http/httptest"
-	"net/url"
 	"testing"
 )
-
-var (
-	mux    *http.ServeMux
-	client *SwervpayClient
-	server *httptest.Server
-)
-
-func setup() {
-	mux = http.NewServeMux()
-	server = httptest.NewServer(mux)
-	client = NewSwervpayClient(&SwervpayClientOption{
-		BusinessID: "",
-		SecretKey:  "",
-		BaseURL:    "",
-	})
-	url, _ := url.Parse(server.URL)
-	client.BaseURL = url
-}
-
-func teardown() {
-	server.Close()
-}
 
 func TestGetBusiness(t *testing.T) {
 	setup()
@@ -57,10 +33,4 @@ func TestGetBusiness(t *testing.T) {
 		t.Errorf("Unable to get business: %v", err)
 	}
 	assert.Equal(t, resp.ID, "bus_123456789")
-}
-
-func testMethod(t *testing.T, r *http.Request, expected string) {
-	if expected != r.Method {
-		t.Errorf("Request method = %v, expected %v", r.Method, expected)
-	}
 }

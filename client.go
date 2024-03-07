@@ -68,6 +68,7 @@ func NewSwervpayClient(config *SwervpayClientOption) *SwervpayClient {
 	return s
 }
 
+// NewRequest creates a new request to the Swervpay API.
 func (c *SwervpayClient) NewRequest(ctx context.Context, method, path string, params interface{}) (*http.Request, error) {
 	u, err := c.BaseURL.Parse(path)
 	if err != nil {
@@ -76,6 +77,9 @@ func (c *SwervpayClient) NewRequest(ctx context.Context, method, path string, pa
 
 	var req *http.Request
 	req, err = http.NewRequestWithContext(ctx, method, u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 	if params != nil {
 		buf := new(bytes.Buffer)
 		err = json.NewEncoder(buf).Encode(params)
@@ -107,7 +111,7 @@ func (c *SwervpayClient) Perform(req *http.Request, ret interface{}) (*http.Resp
 	defer func(Body io.ReadCloser) {
 		err := Body.Close()
 		if err != nil {
-
+			return
 		}
 	}(resp.Body)
 
@@ -160,12 +164,14 @@ func handleError(resp *http.Response) error {
 	}
 }
 
+// InvalidRequestError represents an error caused by the client.
 type InvalidRequestError struct {
 	StatusCode int    `json:"statusCode"`
 	Name       string `json:"name"`
 	Message    string `json:"message"`
 }
 
+// DefaultResponse represents the default response from the Swervpay API.
 type DefaultResponse struct {
 	Message string `json:"message"`
 }

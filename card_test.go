@@ -12,7 +12,9 @@ func TestFundCard(t *testing.T) {
 	setup()
 	defer teardown()
 
-	mux.HandleFunc("/cards/card_12345678/fund", func(w http.ResponseWriter, r *http.Request) {
+	cardId := "card_12345678"
+
+	mux.HandleFunc("/cards/"+cardId+"/fund", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPost)
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
@@ -30,7 +32,7 @@ func TestFundCard(t *testing.T) {
 		Amount: 1000,
 	}
 
-	resp, err := client.Card.Fund(context.Background(), "card_12345678", req)
+	resp, err := client.Card.Fund(context.Background(), cardId, req)
 	if err != nil {
 		t.Errorf("Unable to fund card: %v", err)
 	}
