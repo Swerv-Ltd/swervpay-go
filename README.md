@@ -44,3 +44,7 @@ Use go get.
 ```bash
 $ go get github.com/Swerv-Ltd/swervpay-go
 ```
+
+## Documentation
+
+See [docs for Go here](https://docs.swervpay.co/sdks/go)

@@ -7,49 +7,49 @@ import (
 
 // Card represents a card with its details.
 type Card struct {
-	AddressCity       string `json:"address_city"`        // City of the card holder's address.
-	AddressCountry    string `json:"address_country"`     // Country of the card holder's address.
-	AddressPostalCode string `json:"address_postal_code"` // Postal code of the card holder's address.
-	AddressState      string `json:"address_state"`       // State of the card holder's address.
-	AddressStreet     string `json:"address_street"`      // Street of the card holder's address.
-	Balance           int64  `json:"balance"`             // Balance on the card.
-	CardNumber        string `json:"card_number"`         // Card number.
-	CreatedAt         string `json:"created_at"`          // Creation date of the card.
-	Currency          string `json:"currency"`            // Currency of the card.
-	Cvv               string `json:"cvv"`                 // CVV of the card.
-	Expiry            string `json:"expiry"`              // Expiry date of the card.
-	Freeze            bool   `json:"freeze"`              // Freeze status of the card.
-	ID                string `json:"id"`                  // ID of the card.
-	Issuer            string `json:"issuer"`              // Issuer of the card.
-	MaskedPan         string `json:"masked_pan"`          // Masked PAN of the card.
-	NameOnCard        string `json:"name_on_card"`        // Name on the card.
-	Status            string `json:"status"`              // Status of the card.
-	TotalFunded       int64  `json:"total_funded"`        // Total funded amount on the card.
-	Type              string `json:"type"`                // Type of the card.
-	UpdatedAt         string `json:"updated_at"`          // Last update date of the card.
+	AddressCity       string  `json:"address_city"`        // City of the card holder's address.
+	AddressCountry    string  `json:"address_country"`     // Country of the card holder's address.
+	AddressPostalCode string  `json:"address_postal_code"` // Postal code of the card holder's address.
+	AddressState      string  `json:"address_state"`       // State of the card holder's address.
+	AddressStreet     string  `json:"address_street"`      // Street of the card holder's address.
+	Balance           float64 `json:"balance"`             // Balance on the card.
+	CardNumber        string  `json:"card_number"`         // Card number.
+	CreatedAt         string  `json:"created_at"`          // Creation date of the card.
+	Currency          string  `json:"currency"`            // Currency of the card.
+	Cvv               string  `json:"cvv"`                 // CVV of the card.
+	Expiry            string  `json:"expiry"`              // Expiry date of the card.
+	Freeze            bool    `json:"freeze"`              // Freeze status of the card.
+	ID                string  `json:"id"`                  // ID of the card.
+	Issuer            string  `json:"issuer"`              // Issuer of the card.
+	MaskedPan         string  `json:"masked_pan"`          // Masked PAN of the card.
+	NameOnCard        string  `json:"name_on_card"`        // Name on the card.
+	Status            string  `json:"status"`              // Status of the card.
+	TotalFunded       float64 `json:"total_funded"`        // Total funded amount on the card.
+	Type              string  `json:"type"`                // Type of the card.
+	UpdatedAt         string  `json:"updated_at"`          // Last update date of the card.
 }
 
 // CardTransactionHistory represents a card's transaction history.
 type CardTransactionHistory struct {
-	Amount             int64  `json:"amount"`               // Transaction amount.
-	Category           string `json:"category"`             // Category of the transaction.
-	Charges            int64  `json:"charges"`              // Charges of the transaction.
-	CreatedAt          string `json:"created_at"`           // Creation date of the transaction.
-	Currency           string `json:"currency"`             // Currency of the transaction.
-	ID                 string `json:"id"`                   // ID of the transaction.
-	MerchantCity       string `json:"merchant_city"`        // City of the merchant.
-	MerchantCountry    string `json:"merchant_country"`     // Country of the merchant.
-	MerchantMcc        string `json:"merchant_mcc"`         // MCC of the merchant.
-	MerchantMid        string `json:"merchant_mid"`         // MID of the merchant.
-	MerchantName       string `json:"merchant_name"`        // Name of the merchant.
-	MerchantPostalCode string `json:"merchant_postal_code"` // Postal code of the merchant.
-	MerchantState      string `json:"merchant_state"`       // State of the merchant.
-	Reference          string `json:"reference"`            // Reference of the transaction.
-	Report             bool   `json:"report"`               // Report status of the transaction.
-	ReportMessage      string `json:"report_message"`       // Report message of the transaction.
-	Status             string `json:"status"`               // Status of the transaction.
-	Type               string `json:"type"`                 // Type of the transaction.
-	UpdatedAt          string `json:"updated_at"`           // Last update date of the transaction.
+	Amount             float64 `json:"amount"`               // Transaction amount.
+	Category           string  `json:"category"`             // Category of the transaction.
+	Charges            float64 `json:"charges"`              // Charges of the transaction.
+	CreatedAt          string  `json:"created_at"`           // Creation date of the transaction.
+	Currency           string  `json:"currency"`             // Currency of the transaction.
+	ID                 string  `json:"id"`                   // ID of the transaction.
+	MerchantCity       string  `json:"merchant_city"`        // City of the merchant.
+	MerchantCountry    string  `json:"merchant_country"`     // Country of the merchant.
+	MerchantMcc        string  `json:"merchant_mcc"`         // MCC of the merchant.
+	MerchantMid        string  `json:"merchant_mid"`         // MID of the merchant.
+	MerchantName       string  `json:"merchant_name"`        // Name of the merchant.
+	MerchantPostalCode string  `json:"merchant_postal_code"` // Postal code of the merchant.
+	MerchantState      string  `json:"merchant_state"`       // State of the merchant.
+	Reference          string  `json:"reference"`            // Reference of the transaction.
+	Report             bool    `json:"report"`               // Report status of the transaction.
+	ReportMessage      string  `json:"report_message"`       // Report message of the transaction.
+	Status             string  `json:"status"`               // Status of the transaction.
+	Type               string  `json:"type"`                 // Type of the transaction.
+	UpdatedAt          string  `json:"updated_at"`           // Last update date of the transaction.
 }
 
 // CreateCardBody represents the body of a card creation request.

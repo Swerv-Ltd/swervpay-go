@@ -7,24 +7,24 @@ import (
 
 // Transaction represents a transaction with all its details.
 type Transaction struct {
-	AccountName   string `json:"account_name"`   // The name of the account
-	AccountNumber string `json:"account_number"` // The number of the account
-	Amount        int64  `json:"amount"`         // The amount of the transaction
-	BankCode      string `json:"bank_code"`      // The code of the bank
-	BankName      string `json:"bank_name"`      // The name of the bank
-	Category      string `json:"category"`       // The category of the transaction
-	Charges       int64  `json:"charges"`        // The charges of the transaction
-	CreatedAt     string `json:"created_at"`     // The creation date of the transaction
-	Detail        string `json:"detail"`         // The detail of the transaction
-	FiatRate      int64  `json:"fiat_rate"`      // The fiat rate of the transaction
-	ID            string `json:"id"`             // The ID of the transaction
-	Reference     string `json:"reference"`      // The reference of the transaction
-	Report        bool   `json:"report"`         // The report status of the transaction
-	ReportMessage string `json:"report_message"` // The report message of the transaction
-	SessionID     string `json:"session_id"`     // The session ID of the transaction
-	Status        string `json:"status"`         // The status of the transaction
-	Type          string `json:"type"`           // The type of the transaction
-	UpdatedAt     string `json:"updated_at"`     // The update date of the transaction
+	AccountName   string  `json:"account_name"`   // The name of the account
+	AccountNumber string  `json:"account_number"` // The number of the account
+	Amount        float64 `json:"amount"`         // The amount of the transaction
+	BankCode      string  `json:"bank_code"`      // The code of the bank
+	BankName      string  `json:"bank_name"`      // The name of the bank
+	Category      string  `json:"category"`       // The category of the transaction
+	Charges       float64 `json:"charges"`        // The charges of the transaction
+	CreatedAt     string  `json:"created_at"`     // The creation date of the transaction
+	Detail        string  `json:"detail"`         // The detail of the transaction
+	FiatRate      float64 `json:"fiat_rate"`      // The fiat rate of the transaction
+	ID            string  `json:"id"`             // The ID of the transaction
+	Reference     string  `json:"reference"`      // The reference of the transaction
+	Report        bool    `json:"report"`         // The report status of the transaction
+	ReportMessage string  `json:"report_message"` // The report message of the transaction
+	SessionID     string  `json:"session_id"`     // The session ID of the transaction
+	Status        string  `json:"status"`         // The status of the transaction
+	Type          string  `json:"type"`           // The type of the transaction
+	UpdatedAt     string  `json:"updated_at"`     // The update date of the transaction
 }
 
 // TransactionInt is an interface that defines the methods for transactions.

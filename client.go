@@ -26,6 +26,17 @@ type SwervpayClientOption struct {
 	BaseURL    string
 }
 
+type AuthResponse struct {
+	AccessToken string      `json:"access_token"`
+	Token       TokenDetail `json:"token"`
+}
+
+type TokenDetail struct {
+	Type      string `json:"type"`
+	ExpiresAt int64  `json:"expires_at"`
+	IssuedAt  int64  `json:"issued_at"`
+}
+
 // SwervpayClient represents a client for interacting with Swervpay API Client.
 type SwervpayClient struct {
 	client      *http.Client
@@ -50,6 +61,9 @@ type SwervpayClient struct {
 
 // NewSwervpayClient creates a new SwervpayClient with the given options.
 func NewSwervpayClient(config *SwervpayClientOption) *SwervpayClient {
+	if config.BaseURL == "" {
+		config.BaseURL = "https://api.swervpay.co/api/v1/"
+	}
 	baseURL, _ := url.Parse(config.BaseURL)
 
 	s := &SwervpayClient{client: http.DefaultClient, Config: config, BaseURL: baseURL}
@@ -97,7 +111,10 @@ func (c *SwervpayClient) NewRequest(ctx context.Context, method, path string, pa
 
 	req.Header.Set("Accept", contentType)
 	req.Header.Set("User-Agent", userAgent)
-	req.Header.Set("Authorization", "Bearer "+c.AccessToken)
+
+	if c.AccessToken != "" {
+		req.Header.Set("Authorization", "Bearer "+c.AccessToken)
+	}
 
 	return req, nil
 }
@@ -108,35 +125,65 @@ func (c *SwervpayClient) Perform(req *http.Request, ret interface{}) (*http.Resp
 	if err != nil {
 		return nil, err
 	}
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			return
+
+	// Check if the status code is unauthorized
+	if resp.StatusCode == http.StatusUnauthorized {
+		// Make a request to the auth endpoint
+		authReq, authReqErr := c.NewRequest(context.Background(), http.MethodPost, "auth", nil)
+		if authReqErr != nil {
+			return nil, authReqErr
 		}
-	}(resp.Body)
 
-	// Handle possible errors.
-	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
-		return nil, handleError(resp)
-	}
+		authReq.SetBasicAuth(c.Config.BusinessID, c.Config.SecretKey)
 
-	if resp.StatusCode != http.StatusNoContent && ret != nil {
-		if w, ok := ret.(io.Writer); ok {
-			_, err = io.Copy(w, resp.Body)
+		authResponse := new(AuthResponse)
+
+		_, authReqErr = c.Perform(authReq, authResponse)
+		if authReqErr != nil {
+			return nil, authReqErr
+		}
+
+		// Update the access token
+		c.AccessToken = authResponse.AccessToken
+
+		// Update the original request's Authorization header
+		req.Header.Set("Authorization", "Bearer "+c.AccessToken)
+
+		// Retry the request
+		return c.Perform(req, ret)
+
+	} else {
+
+		defer func(Body io.ReadCloser) {
+			err := Body.Close()
 			if err != nil {
-				return nil, err
+				return
 			}
-		} else {
-			if resp.Body != nil {
-				err = json.NewDecoder(resp.Body).Decode(ret)
+		}(resp.Body)
+
+		// Handle possible errors.
+		if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
+			return nil, handleError(resp)
+		}
+
+		if resp.StatusCode != http.StatusNoContent && ret != nil {
+			if w, ok := ret.(io.Writer); ok {
+				_, err = io.Copy(w, resp.Body)
 				if err != nil {
 					return nil, err
 				}
+			} else {
+				if resp.Body != nil {
+					err = json.NewDecoder(resp.Body).Decode(ret)
+					if err != nil {
+						return nil, err
+					}
+				}
 			}
 		}
-	}
 
-	return resp, err
+		return resp, err
+	}
 }
 
 func handleError(resp *http.Response) error {
@@ -150,6 +197,8 @@ func handleError(resp *http.Response) error {
 			return err
 		}
 		return errors.New("[ERROR]: " + r.Message)
+	case http.StatusNotFound:
+		return errors.New("[ERROR]: Not Found")
 	default:
 		// Tries to parse `message` attr from error
 		r := &DefaultResponse{}
@@ -166,8 +215,8 @@ func handleError(resp *http.Response) error {
 
 // InvalidRequestError represents an error caused by the client.
 type InvalidRequestError struct {
-	StatusCode int    `json:"statusCode"`
-	Name       string `json:"name"`
+	StatusCode int    `json:"statusCode,omitempty"`
+	Name       string `json:"name,omitempty"`
 	Message    string `json:"message"`
 }
 

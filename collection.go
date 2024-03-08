@@ -7,23 +7,23 @@ import (
 
 // CollectionHistory represents the history of a collection.
 type CollectionHistory struct {
-	Amount        int64  `json:"amount"`         // The amount of the collection.
-	Charges       int64  `json:"charges"`        // The charges associated with the collection.
-	CreatedAt     string `json:"created_at"`     // The creation date of the collection.
-	Currency      string `json:"currency"`       // The currency of the collection.
-	ID            string `json:"id"`             // The ID of the collection.
-	PaymentMethod string `json:"payment_method"` // The payment method used for the collection.
-	Reference     string `json:"reference"`      // The reference of the collection.
-	UpdatedAt     string `json:"updated_at"`     // The last update date of the collection.
+	Amount        float64 `json:"amount"`         // The amount of the collection.
+	Charges       float64 `json:"charges"`        // The charges associated with the collection.
+	CreatedAt     string  `json:"created_at"`     // The creation date of the collection.
+	Currency      string  `json:"currency"`       // The currency of the collection.
+	ID            string  `json:"id"`             // The ID of the collection.
+	PaymentMethod string  `json:"payment_method"` // The payment method used for the collection.
+	Reference     string  `json:"reference"`      // The reference of the collection.
+	UpdatedAt     string  `json:"updated_at"`     // The last update date of the collection.
 }
 
 // CreateCollectionBody represents the body of a create collection request.
 type CreateCollectionBody struct {
-	CustomerID   string `json:"customer_id"`   // The ID of the customer.
-	Currency     string `json:"currency"`      // The currency of the collection.
-	MerchantName string `json:"merchant_name"` // The name of the merchant.
-	Amount       int64  `json:"amount"`        // The amount of the collection.
-	Type         string `json:"type"`          // The type of the collection.
+	CustomerID   string  `json:"customer_id"`   // The ID of the customer.
+	Currency     string  `json:"currency"`      // The currency of the collection.
+	MerchantName string  `json:"merchant_name"` // The name of the merchant.
+	Amount       float64 `json:"amount"`        // The amount of the collection.
+	Type         string  `json:"type"`          // The type of the collection.
 }
 
 // CollectionInt is an interface that defines the operations that can be performed on collections.
