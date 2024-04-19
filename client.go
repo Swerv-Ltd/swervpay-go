@@ -63,6 +63,10 @@ type SwervpayClient struct {
 func NewSwervpayClient(config *SwervpayClientOption) *SwervpayClient {
 	if config.BaseURL == "" {
 		config.BaseURL = "https://api.swervpay.co/api/v1/"
+
+		if config.Sandbox {
+			config.BaseURL = "https://sandbox.swervpay.co/api/v1/"
+		}
 	}
 	baseURL, _ := url.Parse(config.BaseURL)
 
