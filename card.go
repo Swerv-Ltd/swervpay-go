@@ -54,12 +54,14 @@ type CardTransactionHistory struct {
 
 // CreateCardBody represents the body of a card creation request.
 type CreateCardBody struct {
-	Amount     float64 `json:"amount"`       // Amount to be loaded on the card.
-	CustomerId string  `json:"customer_id"`  // ID of the customer.
-	Provider   string  `json:"provider"`     // Provider of the card.
-	NameOnCard string  `json:"name_on_card"` // Name to be printed on the card.
-	Currency   string  `json:"currency"`     // Currency of the card.
-	Type       string  `json:"type"`         // Type of the card.
+	Amount      float64 `json:"amount"`       // Amount to be loaded on the card.
+	CustomerId  string  `json:"customer_id"`  // ID of the customer.
+	Provider    string  `json:"provider"`     // Provider of the card.
+	NameOnCard  string  `json:"name_on_card"` // Name to be printed on the card.
+	Currency    string  `json:"currency"`     // Currency of the card.
+	Type        string  `json:"type"`         // Type of the card.
+	PhoneNumber string  `json:"phone_number"` // Phone number of the card holder.
+	ExpiryDate  string  `json:"expiry_date"`  // Expiry date of the card.
 }
 
 // CardCreationResponse represents the response of a card creation request.

@@ -44,12 +44,13 @@ type CustomerKycBody struct {
 
 // Tier1KycInput represents the tier 1 KYC information of a customer.
 type Tier1KycInput struct {
-	Bvn        string `json:"bvn"`         // The BVN of the customer.
-	State      string `json:"state"`       // The state of the customer.
-	City       string `json:"city"`        // The city of the customer.
-	Country    string `json:"country"`     // The country of the customer.
-	Address    string `json:"address"`     // The address of the customer.
-	PostalCode string `json:"postal_code"` // The postal code of the customer.
+	Bvn         string `json:"bvn"`          // The BVN of the customer.
+	State       string `json:"state"`        // The state of the customer.
+	City        string `json:"city"`         // The city of the customer.
+	Country     string `json:"country"`      // The country of the customer.
+	Address     string `json:"address"`      // The address of the customer.
+	PostalCode  string `json:"postal_code"`  // The postal code of the customer.
+	PhoneNumber string `json:"phone_number"` // The phone number of the customer.
 }
 
 // Tier2KycInput represents the tier 2 KYC information of a customer.
