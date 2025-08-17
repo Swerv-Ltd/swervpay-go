@@ -52,7 +52,7 @@ func (o OtherIntImpl) Banks(ctx context.Context) ([]*Bank, error) {
 
 	response := []*Bank{}
 
-	_, err = o.client.Perform(req, response)
+	_, err = o.client.Perform(req, &response)
 
 	if err != nil {
 		return nil, err

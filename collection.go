@@ -54,7 +54,7 @@ func (c CollectionIntImpl) Gets(ctx context.Context, query *PageAndLimitQuery) (
 
 	response := []*Wallet{}
 
-	_, err = c.client.Perform(req, response)
+	_, err = c.client.Perform(req, &response)
 
 	if err != nil {
 		return nil, err
@@ -113,7 +113,7 @@ func (c CollectionIntImpl) Transactions(ctx context.Context, id string, query *P
 
 	response := []*CollectionHistory{}
 
-	_, err = c.client.Perform(req, response)
+	_, err = c.client.Perform(req, &response)
 
 	if err != nil {
 		return nil, err

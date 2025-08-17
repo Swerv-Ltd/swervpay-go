@@ -108,7 +108,7 @@ func (c CardIntImpl) Gets(ctx context.Context, query *PageAndLimitQuery) ([]*Car
 
 	response := []*Card{}
 
-	_, err = c.client.Perform(req, response)
+	_, err = c.client.Perform(req, &response)
 
 	if err != nil {
 		return nil, err
@@ -243,7 +243,7 @@ func (c CardIntImpl) Transactions(ctx context.Context, id string, query *PageAnd
 
 	response := []*CardTransactionHistory{}
 
-	_, err = c.client.Perform(req, response)
+	_, err = c.client.Perform(req, &response)
 
 	if err != nil {
 		return nil, err

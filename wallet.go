@@ -54,7 +54,7 @@ func (w WalletIntImpl) Gets(ctx context.Context, query *PageAndLimitQuery) ([]*W
 	response := []*Wallet{}
 
 	// Perform the request and get the response.
-	_, err = w.client.Perform(req, response)
+	_, err = w.client.Perform(req, &response)
 
 	if err != nil {
 		return nil, err

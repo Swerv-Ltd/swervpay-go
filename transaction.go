@@ -53,7 +53,7 @@ func (t TransactionIntImpl) Gets(ctx context.Context, query *PageAndLimitQuery) 
 
 	response := []*Transaction{}
 
-	_, err = t.client.Perform(req, response)
+	_, err = t.client.Perform(req, &response)
 
 	if err != nil {
 		return nil, err

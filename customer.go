@@ -91,7 +91,7 @@ func (c CustomerIntImpl) Gets(ctx context.Context, query *PageAndLimitQuery) ([]
 
 	response := []*Customer{}
 
-	_, err = c.client.Perform(req, response)
+	_, err = c.client.Perform(req, &response)
 
 	if err != nil {
 		return nil, err
