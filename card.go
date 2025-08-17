@@ -77,14 +77,14 @@ type FundOrWithdrawCardBody struct {
 
 // CardInt is the interface for card operations.
 type CardInt interface {
-	Gets(ctx context.Context, query *PageAndLimitQuery) (*[]Card, error)                                      // Gets multiple cards.
+	Gets(ctx context.Context, query *PageAndLimitQuery) ([]*Card, error)                                      // Gets multiple cards.
 	Get(ctx context.Context, id string) (*Card, error)                                                        // Gets a single card.
 	Create(ctx context.Context, body *CreateCardBody) (*CardCreationResponse, error)                          // Creates a card.
 	Fund(ctx context.Context, id string, body *FundOrWithdrawCardBody) (*DefaultResponse, error)              // Funds a card.
 	Withdraw(ctx context.Context, id string, body *FundOrWithdrawCardBody) (*DefaultResponse, error)          // Withdraws from a card.
 	Terminate(ctx context.Context, id string) (*DefaultResponse, error)                                       // Terminates a card.
 	Freeze(ctx context.Context, id string) (*DefaultResponse, error)                                          // Freezes a card.
-	Transactions(ctx context.Context, id string, query *PageAndLimitQuery) (*[]CardTransactionHistory, error) // Gets multiple transactions of a card.
+	Transactions(ctx context.Context, id string, query *PageAndLimitQuery) ([]*CardTransactionHistory, error) // Gets multiple transactions of a card.
 	Transaction(ctx context.Context, id string, transactionId string) (*CardTransactionHistory, error)        // Gets a single transaction of a card.
 }
 
@@ -98,7 +98,7 @@ var _ CardInt = &CardIntImpl{}
 
 // Gets gets multiple cards.
 // https://docs.swervpay.co/api-reference/cards/get-all-cards
-func (c CardIntImpl) Gets(ctx context.Context, query *PageAndLimitQuery) (*[]Card, error) {
+func (c CardIntImpl) Gets(ctx context.Context, query *PageAndLimitQuery) ([]*Card, error) {
 	path := GenerateURLPath("cards", query)
 
 	req, err := c.client.NewRequest(ctx, http.MethodGet, path, nil)
@@ -106,7 +106,7 @@ func (c CardIntImpl) Gets(ctx context.Context, query *PageAndLimitQuery) (*[]Car
 		return nil, err
 	}
 
-	response := new([]Card)
+	response := []*Card{}
 
 	_, err = c.client.Perform(req, response)
 
@@ -233,7 +233,7 @@ func (c CardIntImpl) Freeze(ctx context.Context, id string) (*DefaultResponse, e
 
 // Transactions gets multiple transactions of a card.
 // https://docs.swervpay.co/api-reference/cards/transactions
-func (c CardIntImpl) Transactions(ctx context.Context, id string, query *PageAndLimitQuery) (*[]CardTransactionHistory, error) {
+func (c CardIntImpl) Transactions(ctx context.Context, id string, query *PageAndLimitQuery) ([]*CardTransactionHistory, error) {
 	path := GenerateURLPath("cards/"+id+"/transactions", query)
 
 	req, err := c.client.NewRequest(ctx, http.MethodGet, path, nil)
@@ -241,7 +241,7 @@ func (c CardIntImpl) Transactions(ctx context.Context, id string, query *PageAnd
 		return nil, err
 	}
 
-	response := new([]CardTransactionHistory)
+	response := []*CardTransactionHistory{}
 
 	_, err = c.client.Perform(req, response)
 

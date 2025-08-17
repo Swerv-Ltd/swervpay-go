@@ -29,7 +29,7 @@ type Transaction struct {
 
 // TransactionInt is an interface that defines the methods for transactions.
 type TransactionInt interface {
-	Gets(ctx context.Context, query *PageAndLimitQuery) (*[]Transaction, error) // Gets a list of transactions
+	Gets(ctx context.Context, query *PageAndLimitQuery) ([]*Transaction, error) // Gets a list of transactions
 	Get(ctx context.Context, id string) (*Transaction, error)                   // Gets a single transaction
 }
 
@@ -43,7 +43,7 @@ var _ TransactionInt = &TransactionIntImpl{}
 
 // Gets retrieves a list of transactions.
 // https://docs.swervpay.co/api-reference/transactions/get-all-transactions
-func (t TransactionIntImpl) Gets(ctx context.Context, query *PageAndLimitQuery) (*[]Transaction, error) {
+func (t TransactionIntImpl) Gets(ctx context.Context, query *PageAndLimitQuery) ([]*Transaction, error) {
 	path := GenerateURLPath("transactions", query)
 
 	req, err := t.client.NewRequest(ctx, http.MethodGet, path, nil)
@@ -51,7 +51,7 @@ func (t TransactionIntImpl) Gets(ctx context.Context, query *PageAndLimitQuery) 
 		return nil, err
 	}
 
-	response := new([]Transaction)
+	response := []*Transaction{}
 
 	_, err = t.client.Perform(req, response)
 

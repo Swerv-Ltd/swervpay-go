@@ -63,7 +63,7 @@ type Tier2KycInput struct {
 
 // CustomerInt is an interface that defines the methods for interacting with customers in the Swervpay system.
 type CustomerInt interface {
-	Gets(ctx context.Context, query *PageAndLimitQuery) (*[]Customer, error)             // Gets a list of customers.
+	Gets(ctx context.Context, query *PageAndLimitQuery) ([]*Customer, error)             // Gets a list of customers.
 	Get(ctx context.Context, id string) (*Customer, error)                               // Gets a specific customer.
 	Create(ctx context.Context, body *CreateCustomerBody) (*Customer, error)             // Creates a new customer.
 	Update(ctx context.Context, id string, body *UpdateustomerBody) (*Customer, error)   // Updates a specific customer.
@@ -81,7 +81,7 @@ var _ CustomerInt = &CustomerIntImpl{}
 
 // Gets retrieves a list of customers.
 // https://docs.swervpay.co/api-reference/customers/get-all-customers
-func (c CustomerIntImpl) Gets(ctx context.Context, query *PageAndLimitQuery) (*[]Customer, error) {
+func (c CustomerIntImpl) Gets(ctx context.Context, query *PageAndLimitQuery) ([]*Customer, error) {
 	path := GenerateURLPath("customers", query)
 
 	req, err := c.client.NewRequest(ctx, http.MethodGet, path, nil)
@@ -89,7 +89,7 @@ func (c CustomerIntImpl) Gets(ctx context.Context, query *PageAndLimitQuery) (*[
 		return nil, err
 	}
 
-	response := new([]Customer)
+	response := []*Customer{}
 
 	_, err = c.client.Perform(req, response)
 

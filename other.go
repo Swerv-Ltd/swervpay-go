@@ -7,8 +7,8 @@ import (
 
 // Bank represents a bank in the Swervpay system.
 type Bank struct {
-	Code string `json:"code"` // Code is the unique identifier for the bank.
-	Name string `json:"name"` // Name is the name of the bank.
+	Code string `json:"bank_code"` // Code is the unique identifier for the bank.
+	Name string `json:"bank_name"` // Name is the name of the bank.
 }
 
 // ResolveAccountNumber represents the response from the Swervpay API when resolving an account number.
@@ -28,7 +28,7 @@ type ResolveAccountNumberBody struct {
 // OtherInt is an interface for interacting with the Swervpay API.
 type OtherInt interface {
 	// Banks retrieves a list of all banks in the Swervpay system.
-	Banks(ctx context.Context) (*[]Bank, error)
+	Banks(ctx context.Context) ([]*Bank, error)
 	// ResolveAccountNumber resolves an account number in the Swervpay system.
 	ResolveAccountNumber(ctx context.Context, body ResolveAccountNumberBody) (*ResolveAccountNumber, error)
 }
@@ -43,14 +43,14 @@ var _ OtherInt = &OtherIntImpl{}
 
 // Banks retrieves a list of all banks in the Swervpay system.
 // https://docs.swervpay.co/api-reference/others/get-banks
-func (o OtherIntImpl) Banks(ctx context.Context) (*[]Bank, error) {
+func (o OtherIntImpl) Banks(ctx context.Context) ([]*Bank, error) {
 
 	req, err := o.client.NewRequest(ctx, http.MethodGet, "banks", nil)
 	if err != nil {
 		return nil, err
 	}
 
-	response := new([]Bank)
+	response := []*Bank{}
 
 	_, err = o.client.Perform(req, response)
 

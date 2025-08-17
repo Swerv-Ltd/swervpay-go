@@ -28,10 +28,10 @@ type CreateCollectionBody struct {
 
 // CollectionInt is an interface that defines the operations that can be performed on collections.
 type CollectionInt interface {
-	Gets(ctx context.Context, query *PageAndLimitQuery) (*[]Wallet, error)                               // Gets a list of wallets.
+	Gets(ctx context.Context, query *PageAndLimitQuery) ([]*Wallet, error)                               // Gets a list of wallets.
 	Get(ctx context.Context, id string) (*Wallet, error)                                                 // Gets a specific wallet.
 	Create(ctx context.Context, body *CreateCollectionBody) (*Wallet, error)                             // Creates a new wallet.
-	Transactions(ctx context.Context, id string, query *PageAndLimitQuery) (*[]CollectionHistory, error) // Gets the transactions of a specific wallet.
+	Transactions(ctx context.Context, id string, query *PageAndLimitQuery) ([]*CollectionHistory, error) // Gets the transactions of a specific wallet.
 }
 
 // CollectionIntImpl is an implementation of the CollectionInt interface.
@@ -44,7 +44,7 @@ var _ CollectionInt = &CollectionIntImpl{}
 
 // Gets retrieves a list of wallets.
 // https://docs.swervpay.co/api-reference/collections/get-all-collections
-func (c CollectionIntImpl) Gets(ctx context.Context, query *PageAndLimitQuery) (*[]Wallet, error) {
+func (c CollectionIntImpl) Gets(ctx context.Context, query *PageAndLimitQuery) ([]*Wallet, error) {
 	path := GenerateURLPath("collections", query)
 
 	req, err := c.client.NewRequest(ctx, http.MethodGet, path, nil)
@@ -52,7 +52,7 @@ func (c CollectionIntImpl) Gets(ctx context.Context, query *PageAndLimitQuery) (
 		return nil, err
 	}
 
-	response := new([]Wallet)
+	response := []*Wallet{}
 
 	_, err = c.client.Perform(req, response)
 
@@ -103,7 +103,7 @@ func (c CollectionIntImpl) Create(ctx context.Context, body *CreateCollectionBod
 
 // Transactions retrieves the transactions of a specific wallet.
 // https://docs.swervpay.co/api-reference/collections/transaction
-func (c CollectionIntImpl) Transactions(ctx context.Context, id string, query *PageAndLimitQuery) (*[]CollectionHistory, error) {
+func (c CollectionIntImpl) Transactions(ctx context.Context, id string, query *PageAndLimitQuery) ([]*CollectionHistory, error) {
 	path := GenerateURLPath("collections/"+id+"/transactions", query)
 
 	req, err := c.client.NewRequest(ctx, http.MethodGet, path, nil)
@@ -111,7 +111,7 @@ func (c CollectionIntImpl) Transactions(ctx context.Context, id string, query *P
 		return nil, err
 	}
 
-	response := new([]CollectionHistory)
+	response := []*CollectionHistory{}
 
 	_, err = c.client.Perform(req, response)
 

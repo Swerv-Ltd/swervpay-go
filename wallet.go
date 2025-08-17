@@ -27,7 +27,7 @@ type Wallet struct {
 
 // WalletInt is an interface that defines the methods for managing wallets.
 type WalletInt interface {
-	Gets(ctx context.Context, query *PageAndLimitQuery) (*[]Wallet, error) // Gets a list of wallets.
+	Gets(ctx context.Context, query *PageAndLimitQuery) ([]*Wallet, error) // Gets a list of wallets.
 	Get(ctx context.Context, id string) (*Wallet, error)                   // Gets a specific wallet by its ID.
 }
 
@@ -41,7 +41,7 @@ var _ WalletInt = &WalletIntImpl{}
 
 // Gets retrieves a list of wallets.
 // https://docs.swervpay.co/api-reference/wallets/get-all-wallets
-func (w WalletIntImpl) Gets(ctx context.Context, query *PageAndLimitQuery) (*[]Wallet, error) {
+func (w WalletIntImpl) Gets(ctx context.Context, query *PageAndLimitQuery) ([]*Wallet, error) {
 
 	path := GenerateURLPath("wallets", query)
 
@@ -51,7 +51,7 @@ func (w WalletIntImpl) Gets(ctx context.Context, query *PageAndLimitQuery) (*[]W
 		return nil, err
 	}
 
-	response := new([]Wallet)
+	response := []*Wallet{}
 
 	// Perform the request and get the response.
 	_, err = w.client.Perform(req, response)
