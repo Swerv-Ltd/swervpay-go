@@ -7,12 +7,12 @@ import (
 
 // CreatePayoutBody represents the request body for creating a payout.
 type CreatePayoutBody struct {
-	Reference     string `json:"reference"`      // Unique reference for the payout
-	AccountNumber string `json:"account_number"` // Account number to send the payout to
-	Narration     string `json:"narration"`      // Description of the payout
-	BankCode      string `json:"bank_code"`      // Code of the bank for the account
-	Currency      string `json:"currency"`       // Currency of the payout
-	Amount        int64  `json:"amount"`         // Amount of the payout
+	Reference     string  `json:"reference"`      // Unique reference for the payout
+	AccountNumber string  `json:"account_number"` // Account number to send the payout to
+	Narration     string  `json:"narration"`      // Description of the payout
+	BankCode      string  `json:"bank_code"`      // Code of the bank for the account
+	Currency      string  `json:"currency"`       // Currency of the payout
+	Amount        float64 `json:"amount"`         // Amount of the payout
 }
 
 // CreatePayoutResponse represents the response from creating a payout.
