@@ -21,8 +21,12 @@ func setup() {
 		SecretKey:  "",
 		BaseURL:    "",
 	})
-	url, _ := url.Parse(server.URL)
-	client.BaseURL = url
+	baseURL := server.URL
+	if baseURL[len(baseURL)-1] != '/' {
+		baseURL += "/"
+	}
+	parsedURL, _ := url.Parse(baseURL)
+	client.BaseURL = parsedURL
 }
 
 func teardown() {

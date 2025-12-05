@@ -50,9 +50,9 @@ type CreditWalletResponse struct {
 
 // WalletInt is an interface that defines the methods for managing wallets.
 type WalletInt interface {
-	Gets(ctx context.Context, query *PageAndLimitQuery) ([]*Wallet, error)                              // Gets a list of wallets.
-	Get(ctx context.Context, id string) (*Wallet, error)                                                // Gets a specific wallet by its ID.
-	Credit(ctx context.Context, id string, body *CreditWalletBody) (*CreditWalletResponse, error)      // Credits a wallet.
+	Gets(ctx context.Context, query *PageAndLimitQuery) ([]*Wallet, error)                        // Gets a list of wallets.
+	Get(ctx context.Context, id string) (*Wallet, error)                                          // Gets a specific wallet by its ID.
+	Credit(ctx context.Context, id string, body *CreditWalletBody) (*CreditWalletResponse, error) // Credits a wallet.
 }
 
 // WalletIntImpl is an implementation of the WalletInt interface.

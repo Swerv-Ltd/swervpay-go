@@ -23,7 +23,8 @@ func GenerateURLPath(path string, query interface{}) string {
 
 	urlQuery := v.Encode()
 
-	if url.PathEscape(path) != path {
+	// Always use ? to start query parameters, unless the path already contains a ?
+	if strings.Contains(path, "?") {
 		path += "&" + urlQuery
 	} else {
 		path += "?" + urlQuery
