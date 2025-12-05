@@ -31,6 +31,7 @@ type CollectionInt interface {
 	Gets(ctx context.Context, query *PageAndLimitQuery) ([]*Wallet, error)                               // Gets a list of wallets.
 	Get(ctx context.Context, id string) (*Wallet, error)                                                 // Gets a specific wallet.
 	Create(ctx context.Context, body *CreateCollectionBody) (*Wallet, error)                             // Creates a new wallet.
+	Credit(ctx context.Context, id string, body *CreditWalletBody) (*CreditWalletResponse, error)        // Credits a collection.
 	Transactions(ctx context.Context, id string, query *PageAndLimitQuery) ([]*CollectionHistory, error) // Gets the transactions of a specific wallet.
 }
 
@@ -91,6 +92,25 @@ func (c CollectionIntImpl) Create(ctx context.Context, body *CreateCollectionBod
 	}
 
 	response := new(Wallet)
+
+	_, err = c.client.Perform(req, response)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
+// Credit credits a collection.
+// https://docs.swervpay.co/api-reference/collections/credit
+func (c CollectionIntImpl) Credit(ctx context.Context, id string, body *CreditWalletBody) (*CreditWalletResponse, error) {
+	req, err := c.client.NewRequest(ctx, http.MethodPost, "collections/"+id+"/credit", body)
+	if err != nil {
+		return nil, err
+	}
+
+	response := new(CreditWalletResponse)
 
 	_, err = c.client.Perform(req, response)
 

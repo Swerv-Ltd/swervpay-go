@@ -25,10 +25,34 @@ type Wallet struct {
 	UpdatedAt      string  `json:"updated_at"`      // The last update date of the wallet.
 }
 
+// CreditWalletBody represents the body of a credit wallet request.
+type CreditWalletBody struct {
+	Amount float64                 `json:"amount"` // Amount to credit.
+	Sender CreditWalletSenderInput `json:"sender"` // Sender information.
+}
+
+// CreditWalletSenderInput represents the sender information for crediting a wallet.
+type CreditWalletSenderInput struct {
+	AccountName   string `json:"account_name"`   // Account name of the sender.
+	AccountNumber string `json:"account_number"` // Account number of the sender.
+	BankCode      string `json:"bank_code"`      // Bank code of the sender.
+	BankName      string `json:"bank_name"`      // Bank name of the sender.
+	Narration     string `json:"narration"`      // Narration for the credit transaction.
+	Reference     string `json:"reference"`      // Reference for the credit transaction.
+}
+
+// CreditWalletResponse represents the response from crediting a wallet.
+type CreditWalletResponse struct {
+	ID        string `json:"id"`        // Transaction ID.
+	Message   string `json:"message"`   // Response message.
+	Reference string `json:"reference"` // Transaction reference.
+}
+
 // WalletInt is an interface that defines the methods for managing wallets.
 type WalletInt interface {
-	Gets(ctx context.Context, query *PageAndLimitQuery) ([]*Wallet, error) // Gets a list of wallets.
-	Get(ctx context.Context, id string) (*Wallet, error)                   // Gets a specific wallet by its ID.
+	Gets(ctx context.Context, query *PageAndLimitQuery) ([]*Wallet, error)                              // Gets a list of wallets.
+	Get(ctx context.Context, id string) (*Wallet, error)                                                // Gets a specific wallet by its ID.
+	Credit(ctx context.Context, id string, body *CreditWalletBody) (*CreditWalletResponse, error)      // Credits a wallet.
 }
 
 // WalletIntImpl is an implementation of the WalletInt interface.
@@ -83,5 +107,24 @@ func (w WalletIntImpl) Get(ctx context.Context, id string) (*Wallet, error) {
 	}
 
 	// Return the response.
+	return response, nil
+}
+
+// Credit credits a wallet.
+// https://docs.swervpay.co/api-reference/wallets/credit
+func (w WalletIntImpl) Credit(ctx context.Context, id string, body *CreditWalletBody) (*CreditWalletResponse, error) {
+	req, err := w.client.NewRequest(ctx, http.MethodPost, "wallets/"+id+"/credit", body)
+	if err != nil {
+		return nil, err
+	}
+
+	response := new(CreditWalletResponse)
+
+	_, err = w.client.Perform(req, response)
+
+	if err != nil {
+		return nil, err
+	}
+
 	return response, nil
 }

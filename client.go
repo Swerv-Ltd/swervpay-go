@@ -57,6 +57,7 @@ type SwervpayClient struct {
 	Transaction TransactionInt
 	Other       OtherInt
 	Collection  CollectionInt
+	Bill        BillInt
 }
 
 // NewSwervpayClient creates a new SwervpayClient with the given options.
@@ -82,6 +83,7 @@ func NewSwervpayClient(config *SwervpayClientOption) *SwervpayClient {
 	s.Card = &CardIntImpl{client: s}
 	s.Customer = &CustomerIntImpl{client: s}
 	s.Collection = &CollectionIntImpl{client: s}
+	s.Bill = &BillIntImpl{client: s}
 
 	return s
 }

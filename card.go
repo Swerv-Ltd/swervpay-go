@@ -84,6 +84,8 @@ type CardInt interface {
 	Withdraw(ctx context.Context, id string, body *FundOrWithdrawCardBody) (*DefaultResponse, error)          // Withdraws from a card.
 	Terminate(ctx context.Context, id string) (*DefaultResponse, error)                                       // Terminates a card.
 	Freeze(ctx context.Context, id string) (*DefaultResponse, error)                                          // Freezes a card.
+	Unfreeze(ctx context.Context, id string) (*DefaultResponse, error)                                        // Unfreezes a card.
+	Regularize(ctx context.Context, id string) (*DefaultResponse, error)                                      // Regularizes a card.
 	Transactions(ctx context.Context, id string, query *PageAndLimitQuery) ([]*CardTransactionHistory, error) // Gets multiple transactions of a card.
 	Transaction(ctx context.Context, id string, transactionId string) (*CardTransactionHistory, error)        // Gets a single transaction of a card.
 }
@@ -216,6 +218,44 @@ func (c CardIntImpl) Terminate(ctx context.Context, id string) (*DefaultResponse
 // https://docs.swervpay.co/api-reference/cards/freeze
 func (c CardIntImpl) Freeze(ctx context.Context, id string) (*DefaultResponse, error) {
 	req, err := c.client.NewRequest(ctx, http.MethodPost, "cards/"+id+"/freeze", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	response := new(DefaultResponse)
+
+	_, err = c.client.Perform(req, response)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
+// Unfreeze unfreezes a card.
+// https://docs.swervpay.co/api-reference/cards/unfreeze
+func (c CardIntImpl) Unfreeze(ctx context.Context, id string) (*DefaultResponse, error) {
+	req, err := c.client.NewRequest(ctx, http.MethodPost, "cards/"+id+"/unfreeze", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	response := new(DefaultResponse)
+
+	_, err = c.client.Perform(req, response)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
+// Regularize regularizes a card.
+// https://docs.swervpay.co/api-reference/cards/regularize
+func (c CardIntImpl) Regularize(ctx context.Context, id string) (*DefaultResponse, error) {
+	req, err := c.client.NewRequest(ctx, http.MethodPost, "cards/"+id+"/regularize", nil)
 	if err != nil {
 		return nil, err
 	}
