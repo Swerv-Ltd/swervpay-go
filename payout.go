@@ -18,6 +18,7 @@ type CreatePayoutBody struct {
 // CreatePayoutResponse represents the response from creating a payout.
 type CreatePayoutResponse struct {
 	Reference string `json:"reference"` // Unique reference for the payout
+	ID        string `json:"id"`        // ID of the payout
 	Message   string `json:"message"`   // Message indicating the status of the payout
 }
 
