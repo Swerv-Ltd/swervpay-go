@@ -70,6 +70,13 @@ type CardCreationResponse struct {
 	Message string `json:"message"` // Message of the response.
 }
 
+// CardActionResponse represents responses for fund/withdraw actions.
+// Spec: OpenapiResponseData -> { message, transaction }
+type CardActionResponse struct {
+	Message     string       `json:"message"`     // Response message.
+	Transaction *Transaction `json:"transaction"` // Transaction details.
+}
+
 // FundOrWithdrawCardBody represents the body of a fund or withdraw request.
 type FundOrWithdrawCardBody struct {
 	Amount float64 `json:"amount"` // Amount to be funded or withdrawn.
@@ -80,8 +87,8 @@ type CardInt interface {
 	Gets(ctx context.Context, query *PageAndLimitQuery) ([]*Card, error)                                      // Gets multiple cards.
 	Get(ctx context.Context, id string) (*Card, error)                                                        // Gets a single card.
 	Create(ctx context.Context, body *CreateCardBody) (*CardCreationResponse, error)                          // Creates a card.
-	Fund(ctx context.Context, id string, body *FundOrWithdrawCardBody) (*DefaultResponse, error)              // Funds a card.
-	Withdraw(ctx context.Context, id string, body *FundOrWithdrawCardBody) (*DefaultResponse, error)          // Withdraws from a card.
+	Fund(ctx context.Context, id string, body *FundOrWithdrawCardBody) (*CardActionResponse, error)           // Funds a card.
+	Withdraw(ctx context.Context, id string, body *FundOrWithdrawCardBody) (*CardActionResponse, error)       // Withdraws from a card.
 	Terminate(ctx context.Context, id string) (*DefaultResponse, error)                                       // Terminates a card.
 	Freeze(ctx context.Context, id string) (*DefaultResponse, error)                                          // Freezes a card.
 	Unfreeze(ctx context.Context, id string) (*DefaultResponse, error)                                        // Unfreezes a card.
@@ -159,13 +166,13 @@ func (c CardIntImpl) Create(ctx context.Context, body *CreateCardBody) (*CardCre
 
 // Fund funds a card.
 // https://docs.swervpay.co/api-reference/cards/fund-card
-func (c CardIntImpl) Fund(ctx context.Context, id string, body *FundOrWithdrawCardBody) (*DefaultResponse, error) {
+func (c CardIntImpl) Fund(ctx context.Context, id string, body *FundOrWithdrawCardBody) (*CardActionResponse, error) {
 	req, err := c.client.NewRequest(ctx, http.MethodPost, "cards/"+id+"/fund", body)
 	if err != nil {
 		return nil, err
 	}
 
-	response := new(DefaultResponse)
+	response := new(CardActionResponse)
 
 	_, err = c.client.Perform(req, response)
 
@@ -178,13 +185,13 @@ func (c CardIntImpl) Fund(ctx context.Context, id string, body *FundOrWithdrawCa
 
 // Withdraw withdraws from a card.
 // https://docs.swervpay.co/api-reference/cards/withdraw-from-card
-func (c CardIntImpl) Withdraw(ctx context.Context, id string, body *FundOrWithdrawCardBody) (*DefaultResponse, error) {
+func (c CardIntImpl) Withdraw(ctx context.Context, id string, body *FundOrWithdrawCardBody) (*CardActionResponse, error) {
 	req, err := c.client.NewRequest(ctx, http.MethodPost, "cards/"+id+"/withdraw", body)
 	if err != nil {
 		return nil, err
 	}
 
-	response := new(DefaultResponse)
+	response := new(CardActionResponse)
 
 	_, err = c.client.Perform(req, response)
 

@@ -19,11 +19,47 @@ type CollectionHistory struct {
 
 // CreateCollectionBody represents the body of a create collection request.
 type CreateCollectionBody struct {
-	CustomerID   string  `json:"customer_id"`   // The ID of the customer.
-	Currency     string  `json:"currency"`      // The currency of the collection.
-	MerchantName string  `json:"merchant_name"` // The name of the merchant.
-	Amount       float64 `json:"amount"`        // The amount of the collection.
-	Type         string  `json:"type"`          // The type of the collection.
+	CustomerID            string                     `json:"customer_id"`                      // The ID of the customer.
+	Currency              string                     `json:"currency"`                         // The currency of the collection.
+	MerchantName          string                     `json:"merchant_name"`                    // The name of the merchant.
+	Amount                float64                    `json:"amount"`                           // The amount of the collection.
+	Type                  string                     `json:"type"`                             // The type of the collection.
+	Reference             string                     `json:"reference,omitempty"`              // Optional reference for idempotency.
+	AdditionalInformation *AdditionalInformationBody `json:"additional_information,omitempty"` // Optional additional information.
+}
+
+// AdditionalInformationBody mirrors TypesAdditionalInformation from the OpenAPI spec.
+type AdditionalInformationBody struct {
+	AccountDesignation string                     `json:"account_designation,omitempty"`
+	AccountType        string                     `json:"account_type,omitempty"`
+	Address            *AdditionalInformationAddr `json:"address,omitempty"`
+	BankStatement      string                     `json:"bank_statement,omitempty"`
+	DateOfBirth        string                     `json:"date_of_birth,omitempty"`
+	Document           *AdditionalInformationDoc  `json:"document,omitempty"`
+	EmploymentStatus   string                     `json:"employment_status,omitempty"`
+	IncomeBand         string                     `json:"income_band,omitempty"`
+	Nin                string                     `json:"nin,omitempty"`
+	SourceOfIncome     string                     `json:"source_of_income,omitempty"`
+	TaxNumber          string                     `json:"tax_number,omitempty"`
+	UtilityBill        string                     `json:"utility_bill,omitempty"`
+}
+
+// AdditionalInformationAddr mirrors TypesAddress.
+type AdditionalInformationAddr struct {
+	City    string `json:"city,omitempty"`
+	Country string `json:"country,omitempty"`
+	State   string `json:"state,omitempty"`
+	Street  string `json:"street,omitempty"`
+	ZipCode string `json:"zip_code,omitempty"`
+}
+
+// AdditionalInformationDoc mirrors TypesDocument.
+type AdditionalInformationDoc struct {
+	ExpiryDate string   `json:"expiry_date,omitempty"`
+	IssueDate  string   `json:"issue_date,omitempty"`
+	Number     string   `json:"number,omitempty"`
+	Type       string   `json:"type,omitempty"`
+	URLs       []string `json:"urls,omitempty"`
 }
 
 // CollectionInt is an interface that defines the operations that can be performed on collections.
