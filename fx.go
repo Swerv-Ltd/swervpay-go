@@ -21,8 +21,8 @@ type FxRateResponse struct {
 
 // FromOrTo represents a currency and amount in a foreign exchange operation.
 type FromOrTo struct {
-	Amount   string `json:"amount"`   // Amount is the amount in the currency.
-	Currency string `json:"currency"` // Currency is the currency code.
+	Amount   float64 `json:"amount"`   // Amount is the amount in the currency.
+	Currency string  `json:"currency"` // Currency is the currency code.
 }
 
 // FxInt is an interface for foreign exchange operations.

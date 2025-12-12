@@ -21,11 +21,11 @@ func TestFxRate(t *testing.T) {
 		ret := &FxRateResponse{
 			Rate: 1500.0,
 			From: FromOrTo{
-				Amount:   "1000",
+				Amount:   1000.0,
 				Currency: "NGN",
 			},
 			To: FromOrTo{
-				Amount:   "0.67",
+				Amount:   0.67,
 				Currency: "USD",
 			},
 		}
@@ -46,9 +46,9 @@ func TestFxRate(t *testing.T) {
 	assert.NotNil(t, resp)
 	assert.Equal(t, resp.Rate, 1500.0)
 	assert.Equal(t, resp.From.Currency, "NGN")
-	assert.Equal(t, resp.From.Amount, "1000")
+	assert.Equal(t, resp.From.Amount, 1000.0)
 	assert.Equal(t, resp.To.Currency, "USD")
-	assert.Equal(t, resp.To.Amount, "0.67")
+	assert.Equal(t, resp.To.Amount, 0.67)
 }
 
 func TestFxExchange(t *testing.T) {
