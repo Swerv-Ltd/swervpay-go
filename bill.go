@@ -47,42 +47,48 @@ type ValidateBillBody struct {
 
 // BillDetail represents the bill details nested in a transaction.
 type BillDetail struct {
-	BillCode string `json:"bill_code"` // Bill code.
-	BillName string `json:"bill_name"` // Bill name.
-	ItemCode string `json:"item_code"` // Item code.
-	Name     string `json:"name"`      // Item name.
-	Token    string `json:"token"`     // Bill token.
+	BillCode string `json:"bill_code"`       // Bill code.
+	BillName string `json:"bill_name"`       // Bill name.
+	ItemCode string `json:"item_code"`       // Item code.
+	Name     string `json:"name,omitempty"`  // Item name.
+	Token    string `json:"token,omitempty"` // Bill token.
 }
 
 // BillTransaction represents a bill transaction.
 type BillTransaction struct {
-	AccountName   string      `json:"account_name"`   // Account holder name.
-	AccountNumber string      `json:"account_number"` // Account number.
-	Amount        float64     `json:"amount"`         // Transaction amount.
-	BankCode      string      `json:"bank_code"`      // Bank code.
-	BankName      string      `json:"bank_name"`      // Bank name.
-	Bill          *BillDetail `json:"bill"`           // Bill detail payload.
-	Category      string      `json:"category"`       // Category identifier.
-	Charges       float64     `json:"charges"`        // Transaction charges.
-	CreatedAt     string      `json:"created_at"`     // Creation timestamp.
-	Detail        string      `json:"detail"`         // Transaction detail.
-	FiatRate      float64     `json:"fiat_rate"`      // Fiat conversion rate.
-	ID            string      `json:"id"`             // Transaction ID.
-	Imad          string      `json:"imad"`           // IMAD reference.
-	PaymentMethod string      `json:"payment_method"` // Payment method.
-	Reference     string      `json:"reference"`      // Reference string.
-	Report        bool        `json:"report"`         // Report status.
-	ReportMessage string      `json:"report_message"` // Report message.
-	SessionID     string      `json:"session_id"`     // Session ID.
-	Status        string      `json:"status"`         // Transaction status.
-	TraceNumber   string      `json:"trace_number"`   // Trace number.
-	Type          string      `json:"type"`           // Transaction type.
-	UpdatedAt     string      `json:"updated_at"`     // Last update timestamp.
+	AccountName   string      `json:"account_name"`             // Account holder name.
+	AccountNumber string      `json:"account_number"`           // Account number.
+	Amount        float64     `json:"amount"`                   // Transaction amount.
+	BankCode      string      `json:"bank_code"`                // Bank code.
+	BankName      string      `json:"bank_name"`                // Bank name.
+	Bill          *BillDetail `json:"bill,omitempty"`           // Bill detail payload.
+	Category      string      `json:"category"`                 // Category identifier.
+	Charges       float64     `json:"charges"`                  // Transaction charges.
+	CreatedAt     string      `json:"created_at"`               // Creation timestamp.
+	Detail        string      `json:"detail"`                   // Transaction detail.
+	FiatRate      float64     `json:"fiat_rate"`                // Fiat conversion rate.
+	ID            string      `json:"id"`                       // Transaction ID.
+	Imad          string      `json:"imad,omitempty"`           // IMAD reference.
+	PaymentMethod string      `json:"payment_method,omitempty"` // Payment method.
+	Reference     string      `json:"reference"`                // Reference string.
+	Report        bool        `json:"report"`                   // Report status.
+	ReportMessage string      `json:"report_message,omitempty"` // Report message.
+	SessionID     string      `json:"session_id,omitempty"`     // Session ID.
+	Status        string      `json:"status"`                   // Transaction status.
+	TraceNumber   string      `json:"trace_number,omitempty"`   // Trace number.
+	Type          string      `json:"type"`                     // Transaction type.
+	UpdatedAt     string      `json:"updated_at"`               // Last update timestamp.
+}
+
+// CreateBillResponse represents the response from creating a bill.
+type CreateBillResponse struct {
+	Message     string          `json:"message"`     // Response message.
+	Transaction BillTransaction `json:"transaction"` // Transaction details.
 }
 
 // BillInt defines bill-related operations.
 type BillInt interface {
-	Create(ctx context.Context, body *CreateBillBody) (*BillTransaction, error)        // Create a new bill.
+	Create(ctx context.Context, body *CreateBillBody) (*CreateBillResponse, error)     // Create a new bill.
 	Get(ctx context.Context, id string) (*BillTransaction, error)                      // Retrieve a bill by ID.
 	Categories(ctx context.Context, query *PageAndLimitQuery) ([]*BillCategory, error) // List bill categories.
 	CategoryLists(ctx context.Context, id string) ([]*BillerList, error)               // List billers for a category.
@@ -100,13 +106,13 @@ var _ BillInt = &BillIntImpl{}
 
 // Create creates a bill.
 // https://docs.swervpay.co/api-reference/bills/create
-func (b BillIntImpl) Create(ctx context.Context, body *CreateBillBody) (*BillTransaction, error) {
+func (b BillIntImpl) Create(ctx context.Context, body *CreateBillBody) (*CreateBillResponse, error) {
 	req, err := b.client.NewRequest(ctx, http.MethodPost, "bills", body)
 	if err != nil {
 		return nil, err
 	}
 
-	response := new(BillTransaction)
+	response := new(CreateBillResponse)
 
 	_, err = b.client.Perform(req, response)
 	if err != nil {

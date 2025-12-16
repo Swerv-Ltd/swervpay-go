@@ -18,24 +18,27 @@ func TestCreateBill(t *testing.T) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 
-		ret := &BillTransaction{
-			ID:            "bill_123456789",
-			Amount:        1000.0,
-			Status:        "success",
-			Reference:     "ref_123456",
-			Category:      "electricity",
-			PaymentMethod: "card",
-			AccountName:   "John Doe",
-			AccountNumber: "1234567890",
-			BankCode:      "058",
-			BankName:      "GTBank",
-			Charges:       50.0,
-			Bill: &BillDetail{
-				BillCode: "ELEC001",
-				BillName: "Electricity Bill",
-				ItemCode: "ITEM001",
-				Name:     "Monthly Electricity",
-				Token:    "token_123456",
+		ret := &CreateBillResponse{
+			Message: "Bill created successfully",
+			Transaction: BillTransaction{
+				ID:            "bill_123456789",
+				Amount:        1000.0,
+				Status:        "PENDING",
+				Reference:     "ref_123456",
+				Category:      "BILL",
+				PaymentMethod: "card",
+				AccountName:   "John Doe",
+				AccountNumber: "1234567890",
+				BankCode:      "058",
+				BankName:      "GTBank",
+				Charges:       50.0,
+				Detail:        "Bill Payment",
+				Type:          "DEBIT",
+				Bill: &BillDetail{
+					BillCode: "ELEC001",
+					BillName: "Electricity Bill",
+					ItemCode: "ITEM001",
+				},
 			},
 		}
 		err := json.NewEncoder(w).Encode(&ret)
@@ -57,11 +60,12 @@ func TestCreateBill(t *testing.T) {
 	if err != nil {
 		t.Errorf("Unable to create bill: %v", err)
 	}
-	assert.Equal(t, resp.ID, "bill_123456789")
-	assert.Equal(t, resp.Amount, 1000.0)
-	assert.Equal(t, resp.Status, "success")
-	assert.NotNil(t, resp.Bill)
-	assert.Equal(t, resp.Bill.BillCode, "ELEC001")
+	assert.Equal(t, resp.Message, "Bill created successfully")
+	assert.Equal(t, resp.Transaction.ID, "bill_123456789")
+	assert.Equal(t, resp.Transaction.Amount, 1000.0)
+	assert.Equal(t, resp.Transaction.Status, "PENDING")
+	assert.NotNil(t, resp.Transaction.Bill)
+	assert.Equal(t, resp.Transaction.Bill.BillCode, "ELEC001")
 }
 
 func TestGetBill(t *testing.T) {
