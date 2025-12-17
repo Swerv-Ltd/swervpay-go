@@ -127,6 +127,19 @@ func (c *SwervpayClient) NewRequest(ctx context.Context, method, path string, pa
 
 // Perform sends the request to the Resend API
 func (c *SwervpayClient) Perform(req *http.Request, ret interface{}) (*http.Response, error) {
+	// Store the request body for potential retry after reauthentication
+	var bodyBytes []byte
+	if req.Body != nil {
+		var err error
+		bodyBytes, err = io.ReadAll(req.Body)
+		if err != nil {
+			return nil, err
+		}
+		req.Body.Close()
+		// Restore the body for the first attempt
+		req.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
+	}
+
 	resp, err := c.client.Do(req)
 	if err != nil {
 		return nil, err
@@ -154,6 +167,11 @@ func (c *SwervpayClient) Perform(req *http.Request, ret interface{}) (*http.Resp
 
 		// Update the original request's Authorization header
 		req.Header.Set("Authorization", "Bearer "+c.AccessToken)
+
+		// Restore the request body from stored bytes for retry
+		if bodyBytes != nil {
+			req.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
+		}
 
 		// Retry the request
 		return c.Perform(req, ret)
