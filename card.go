@@ -27,6 +27,7 @@ type Card struct {
 	TotalFunded       float64 `json:"total_funded"`        // Total funded amount on the card.
 	Type              string  `json:"type"`                // Type of the card.
 	UpdatedAt         string  `json:"updated_at"`          // Last update date of the card.
+	EncryptedDetails  string  `json:"encrypted_details"`   // Encrypted details of the card.
 }
 
 // CardTransactionHistory represents a card's transaction history.
