@@ -66,6 +66,7 @@ type CustomerInt interface {
 	Gets(ctx context.Context, query *PageAndLimitQuery) ([]*Customer, error)             // Gets a list of customers.
 	Get(ctx context.Context, id string) (*Customer, error)                               // Gets a specific customer.
 	Create(ctx context.Context, body *CreateCustomerBody) (*Customer, error)             // Creates a new customer.
+	Delete(ctx context.Context, id string) (*DefaultResponse, error)                     // Deletes a specific customer.
 	Update(ctx context.Context, id string, body *UpdateustomerBody) (*Customer, error)   // Updates a specific customer.
 	Kyc(ctx context.Context, id string, body *CustomerKycBody) (*DefaultResponse, error) // Updates the KYC information of a specific customer.
 	Blacklist(ctx context.Context, id string) (*DefaultResponse, error)                  // Blacklists a specific customer.
@@ -132,6 +133,21 @@ func (c CustomerIntImpl) Create(ctx context.Context, body *CreateCustomerBody) (
 	_, err = c.client.Perform(req, response)
 
 	if err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
+// Delete deletes a specific customer.
+func (c CustomerIntImpl) Delete(ctx context.Context, id string) (*DefaultResponse, error) {
+	req, err := c.client.NewRequest(ctx, http.MethodDelete, "customers/"+id, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	response := new(DefaultResponse)
+	if _, err = c.client.Perform(req, response); err != nil {
 		return nil, err
 	}
 

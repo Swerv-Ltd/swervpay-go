@@ -96,3 +96,24 @@ func TestWithdrawCard(t *testing.T) {
 		assert.Equal(t, resp.Transaction.Status, "success")
 	}
 }
+
+func TestSetCardPin(t *testing.T) {
+	setup()
+	defer teardown()
+
+	cardID := "card_001"
+	mux.HandleFunc("/cards/"+cardID+"/pin", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodPatch)
+		var body SetCardPinBody
+		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+			t.Fatal(err)
+		}
+		assert.Equal(t, "1234", body.PIN)
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{"message":"card PIN updated"}`))
+	})
+
+	response, err := client.Card.SetPin(context.Background(), cardID, &SetCardPinBody{PIN: "1234"})
+	assert.NoError(t, err)
+	assert.Equal(t, "card PIN updated", response.Message)
+}

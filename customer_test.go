@@ -244,3 +244,19 @@ func TestCustomerBlacklist(t *testing.T) {
 	assert.NotNil(t, resp)
 	assert.Equal(t, resp.Message, "Customer blacklisted successfully")
 }
+
+func TestCustomerDelete(t *testing.T) {
+	setup()
+	defer teardown()
+
+	customerID := "cust_001"
+	mux.HandleFunc("/customers/"+customerID, func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodDelete)
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{"message":"customer deleted"}`))
+	})
+
+	response, err := client.Customer.Delete(context.Background(), customerID)
+	assert.NoError(t, err)
+	assert.Equal(t, "customer deleted", response.Message)
+}

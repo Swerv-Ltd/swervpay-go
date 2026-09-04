@@ -20,9 +20,12 @@ type Card struct {
 	Expiry            string  `json:"expiry"`              // Expiry date of the card.
 	Freeze            bool    `json:"freeze"`              // Freeze status of the card.
 	ID                string  `json:"id"`                  // ID of the card.
+	IsPhysical        bool    `json:"is_physical"`         // Whether the card is physical.
 	Issuer            string  `json:"issuer"`              // Issuer of the card.
 	MaskedPan         string  `json:"masked_pan"`          // Masked PAN of the card.
 	NameOnCard        string  `json:"name_on_card"`        // Name on the card.
+	PendingBalance    float64 `json:"pending_balance"`     // Pending balance on the card.
+	ReIssued          bool    `json:"re_issued"`           // Whether the card was reissued.
 	Status            string  `json:"status"`              // Status of the card.
 	TotalFunded       float64 `json:"total_funded"`        // Total funded amount on the card.
 	Type              string  `json:"type"`                // Type of the card.
@@ -37,6 +40,7 @@ type CardTransactionHistory struct {
 	Charges            float64 `json:"charges"`              // Charges of the transaction.
 	CreatedAt          string  `json:"created_at"`           // Creation date of the transaction.
 	Currency           string  `json:"currency"`             // Currency of the transaction.
+	Description        string  `json:"description"`          // Description of the transaction.
 	ID                 string  `json:"id"`                   // ID of the transaction.
 	MerchantCity       string  `json:"merchant_city"`        // City of the merchant.
 	MerchantCountry    string  `json:"merchant_country"`     // Country of the merchant.
@@ -92,6 +96,14 @@ type FundOrWithdrawCardBody struct {
 	Amount float64 `json:"amount"` // Amount to be funded or withdrawn.
 }
 
+// SetCardPinBody represents a request to set or update a card PIN.
+type SetCardPinBody struct {
+	PIN string `json:"pin"`
+}
+
+// SetCardPinRequest is an alias for SetCardPinBody.
+type SetCardPinRequest = SetCardPinBody
+
 // CardInt is the interface for card operations.
 type CardInt interface {
 	Gets(ctx context.Context, query *PageAndLimitQuery) ([]*Card, error)                                      // Gets multiple cards.
@@ -103,6 +115,7 @@ type CardInt interface {
 	Freeze(ctx context.Context, id string) (*DefaultResponse, error)                                          // Freezes a card.
 	Unfreeze(ctx context.Context, id string) (*DefaultResponse, error)                                        // Unfreezes a card.
 	Regularize(ctx context.Context, id string) (*DefaultResponse, error)                                      // Regularizes a card.
+	SetPin(ctx context.Context, id string, body *SetCardPinBody) (*DefaultResponse, error)                    // Sets or updates a card PIN.
 	Transactions(ctx context.Context, id string, query *PageAndLimitQuery) ([]*CardTransactionHistory, error) // Gets multiple transactions of a card.
 	Transaction(ctx context.Context, id string, transactionId string) (*CardTransactionHistory, error)        // Gets a single transaction of a card.
 }
@@ -282,6 +295,21 @@ func (c CardIntImpl) Regularize(ctx context.Context, id string) (*DefaultRespons
 	_, err = c.client.Perform(req, response)
 
 	if err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
+// SetPin sets or updates the PIN for a card.
+func (c CardIntImpl) SetPin(ctx context.Context, id string, body *SetCardPinBody) (*DefaultResponse, error) {
+	req, err := c.client.NewRequest(ctx, http.MethodPatch, "cards/"+id+"/pin", body)
+	if err != nil {
+		return nil, err
+	}
+
+	response := new(DefaultResponse)
+	if _, err = c.client.Perform(req, response); err != nil {
 		return nil, err
 	}
 

@@ -8,22 +8,50 @@ import (
 )
 
 func GenerateURLPath(path string, query interface{}) string {
+	if query == nil {
+		return path
+	}
+
 	v := url.Values{}
 
 	q := reflect.ValueOf(query)
-	if q.Kind() == reflect.Ptr {
+	for q.Kind() == reflect.Ptr {
+		if q.IsNil() {
+			return path
+		}
 		q = q.Elem() // Dereference the pointer to get the underlying struct
+	}
+	if q.Kind() != reflect.Struct {
+		return path
 	}
 
 	for i := 0; i < q.NumField(); i++ {
 		field := q.Type().Field(i)
+		if field.PkgPath != "" {
+			continue
+		}
+
+		name := strings.ToLower(field.Name)
+		if tag := strings.Split(field.Tag.Get("json"), ",")[0]; tag != "" && tag != "-" {
+			name = tag
+		}
+
 		value := q.Field(i).Interface()
-		v.Add(strings.ToLower(field.Name), strconv.Itoa(value.(int)))
+		switch value := value.(type) {
+		case int:
+			v.Add(name, strconv.Itoa(value))
+		case string:
+			if value != "" {
+				v.Add(name, value)
+			}
+		}
 	}
 
 	urlQuery := v.Encode()
+	if urlQuery == "" {
+		return path
+	}
 
-	// Always use ? to start query parameters, unless the path already contains a ?
 	if strings.Contains(path, "?") {
 		path += "&" + urlQuery
 	} else {

@@ -12,6 +12,7 @@ type Transaction struct {
 	Amount        float64 `json:"amount"`                   // The amount of the transaction
 	BankCode      string  `json:"bank_code"`                // The code of the bank
 	BankName      string  `json:"bank_name"`                // The name of the bank
+	Currency      string  `json:"currency,omitempty"`       // The currency of the transaction
 	Category      string  `json:"category"`                 // The category of the transaction
 	Charges       float64 `json:"charges"`                  // The charges of the transaction
 	CreatedAt     string  `json:"created_at"`               // The creation date of the transaction

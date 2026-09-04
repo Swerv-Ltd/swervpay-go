@@ -9,16 +9,18 @@ import (
 // Business represents a business entity in the Swervpay system.
 // It includes various properties like address, name, country, etc.
 type Business struct {
-	Address   string `json:"address"`    // Address of the business
-	Name      string `json:"name"`       // Name of the business
-	Country   string `json:"country"`    // Country where the business is located
-	CreatedAt string `json:"created_at"` // Time when the business was created
-	Email     string `json:"email"`      // Email of the business
-	ID        string `json:"id"`         // Unique identifier of the business
-	Logo      string `json:"logo"`       // Logo of the business
-	Slug      string `json:"slug"`       // Slug of the business
-	Type      string `json:"type"`       // Type of the business
-	UpdatedAt string `json:"updated_at"` // Time when the business was last updated
+	ActivityStatus string `json:"activity_status"` // Activity status of the business
+	Address        string `json:"address"`         // Address of the business
+	Name           string `json:"name"`            // Name of the business
+	Country        string `json:"country"`         // Country where the business is located
+	CreatedAt      string `json:"created_at"`      // Time when the business was created
+	Email          string `json:"email"`           // Email of the business
+	ID             string `json:"id"`              // Unique identifier of the business
+	Logo           string `json:"logo"`            // Logo of the business
+	Slug           string `json:"slug"`            // Slug of the business
+	Status         string `json:"status"`          // Status of the business
+	Type           string `json:"type"`            // Type of the business
+	UpdatedAt      string `json:"updated_at"`      // Time when the business was last updated
 }
 
 // BusinessInt is an interface that defines the methods a Business must have.
